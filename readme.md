@@ -33,7 +33,7 @@ To set up Nicholas, you must run `setupRouter()` sometime after your content has
 so:
 
 ```javascript
-import { setupRouter } from '@nicholas';
+import { setupRouter } from 'nicholas';
 
 window.onload = () => setupRouter()
 ```
@@ -42,7 +42,7 @@ window.onload = () => setupRouter()
 so by passing middleware callbacks, much like how Express handles routing middleware:
 
 ```javascript
-import { setupRouter } from '@nicholas';
+import { setupRouter } from 'nicholas';
 
 window.onload = () => setupRouter(
 	( args, next ) => {
@@ -57,7 +57,7 @@ window.onload = () => setupRouter(
 A link can be routed manually at any time using `route` function.
 
 ```javascript
-import { route } from '@nicholas'
+import { route } from 'nicholas'
 
 route( { url: 'https://www.url-to-route-to.com' } )
 ```
@@ -66,7 +66,7 @@ It can also be added as an event listener as a middleware inside setupRouter. Th
 the event is a valid `a` tag, and will use the `href` value for the url automatically.
 
 ```javascript
-import { setupRouter, route } from '@nicholas';
+import { setupRouter, route } from 'nicholas';
 
 window.onload = () => setupRouter( ( args, next ) => {
 	// Set up click listener
@@ -85,7 +85,7 @@ Nicholas _does not do anything with the history_. This is because it doesn't kno
 Instead, Nicholas assumes that you'll set up history inside `addRouteAction` through the context of your app.
 
 ```javascript
-import { setupRouter, addRouteAction } from '@nicholas';
+import { setupRouter, addRouteAction } from 'nicholas';
 
 // When a URL is visited, do these actions
 addRouteAction( ( { event, url }, next ) => {
@@ -109,7 +109,7 @@ You can also _stop_ a route from using nicholas at any time with a `return` call
 running `next()`. This allows you to add further validations within the context of your app.
 
 ```javascript
-import { setupRouter, addRouteAction } from '@nicholas';
+import { setupRouter, addRouteAction } from 'nicholas';
 
 // When a URL is visited, do these actions
 addRouteAction( ( { event, url }, next ) => {
@@ -148,7 +148,7 @@ In some circumstances, you will need to save to the cache yourself. This can be 
 directly.
 
 ```javascript
-import { Url } from '@nicholas'
+import { Url } from 'nicholas'
 
 // Construct a URL object from the current page. You can replace this with any local URL
 const currentUrl = new Url( window.location.href )
@@ -164,7 +164,7 @@ It is important to note that `updateCache` does not _replace_ the cache data, it
 cache. If you want to completely replace the cache data, you need to clear the cache first.
 
 ```javascript
-import { Url } from '@nicholas'
+import { Url } from 'nicholas'
 
 // Construct a URL object from the current page. You can replace this with any local URL
 const currentUrl = new Url( window.location.href )
@@ -185,7 +185,7 @@ The `Url` object includes a way to clear the cache for a specific URL, but what 
 cached data? This can be accomplished using the `clearCache` function, like so:
 
 ```javascript
-import { clearCache } from '@nicholas'
+import { clearCache } from 'nicholas'
 
 // Clears ALL data cached by Nicholas.
 clearCache()
