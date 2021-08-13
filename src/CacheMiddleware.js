@@ -10,12 +10,16 @@ const CacheMiddleware = CreateMiddlewareStack()
  *
  * @callback {function(args, next)} The action callback
  */
-function addCacheAction( actions ) {
-	return CacheMiddleware.add( actions );
+function addCacheActions( ...actions ) {
+	return CacheMiddleware.add( ...actions );
 }
 
-function cacheItems() {
-	const urls = [...document.querySelectorAll( 'a' )].reduce( ( acc, element ) => {
+function cacheItems( args = {} ) {
+	return CacheMiddleware.execute( args )
+}
+
+function localUrlMiddleware( args, next ){
+	args.urls = [...document.querySelectorAll( 'a' )].reduce( ( acc, element ) => {
 		const url = new Url( element.getAttribute( 'href' ) );
 		const item = url.getCache()
 
@@ -26,7 +30,7 @@ function cacheItems() {
 		return acc;
 	}, [] );
 
-	return CacheMiddleware.execute( { urls } )
+	next()
 }
 
 /**
@@ -43,4 +47,4 @@ function clearCache() {
 	} )
 }
 
-export { addCacheAction, cacheItems, clearCache }
+export { addCacheActions, cacheItems, clearCache, localUrlMiddleware }

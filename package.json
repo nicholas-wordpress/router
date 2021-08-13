@@ -1,6 +1,6 @@
 {
-  "name": "nicholas",
-  "version": "1.0.1",
+  "name": "nicholas/core",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {

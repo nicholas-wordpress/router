@@ -15,22 +15,31 @@ function Url( args ) {
 		location = undefined
 		parser = undefined
 	} else {
-		[address, location, parser] = {
+		const items = {
 			...args, ...{
 				address: '',
 				location: undefined,
 				parser: undefined
 			}
 		}
+		address = items.address
+		location = items.location
+		parser = items.parser
 	}
 
 	const url = new UrlOriginal( address, location, parser );
+
+	//Normalize the pathname
+	if ( !url.pathname.endsWith( '/' ) ) {
+		url.pathname = `${url.pathname}/`
+	}
+
 	let cacheKey = false;
 
 	Object.defineProperty( url, 'cacheKey', {
 		get: function () {
 			if ( false === cacheKey ) {
-				cacheKey = `nicholas-${md5( this.href ).toString()}`
+				cacheKey = `nicholas-${md5( this.pathname ).toString()}`
 			}
 
 			return cacheKey
@@ -40,6 +49,12 @@ function Url( args ) {
 	url.isLocal = function () {
 		const home = new Url( window.location.href )
 		return this.origin === home.origin || home.href.startsWith( '/' ) || !home.href.includes( '/' )
+	}
+
+	url.matchesUrl = ( url ) => {
+		const testUrl = new Url( url )
+
+		return this.pathname === testUrl.pathname
 	}
 
 	url.updateCache = function ( data ) {

@@ -1,12 +1,12 @@
 import CreateMiddlewareStack from "./CreateMiddlewareStack";
-import { cacheItems } from "./CacheMiddleware";
+import { route } from "./RouteMiddleware";
 
 let ran = false
 
 const SetupMiddleware = CreateMiddlewareStack()
 
-function addSetupAction( actions ) {
-	return SetupMiddleware.add( actions )
+function addSetupActions( ...actions ) {
+	return SetupMiddleware.add( ...actions )
 }
 
 /**
@@ -24,11 +24,8 @@ function setupRouter( ...actions ) {
 	}
 
 	const response = new Promise( async ( res, rej ) => {
-		actions.forEach( action => addSetupAction( action ) );
-		await SetupMiddleware.execute()
-
-		// Cache items
-		cacheItems()
+		addSetupActions( ...actions )
+		await SetupMiddleware.execute( {} )
 
 		res( true )
 	} )
@@ -37,4 +34,9 @@ function setupRouter( ...actions ) {
 	return response
 }
 
-export { setupRouter, addSetupAction };
+function handleClickMiddleware( args, next ) {
+	document.addEventListener( 'click', ( event ) => route( { event } ) )
+	next()
+}
+
+export { setupRouter, addSetupActions, handleClickMiddleware };

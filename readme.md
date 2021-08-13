@@ -1,25 +1,22 @@
 # Nicholas
 
-Nicholas is a small, extend-able client-side caching layer for websites. It was originally built to make using the
+Nicholas is a small, extend-able client-side caching, and routing layer for websites. It was originally built to make
+using the
 [Nearly Headless](https://www.wpdev.academy/concepts/headless-wordpress-is-overrated-a-case-for-the-nearly-headless-web-app/)
 approach easier to accomplish, but it is also most-likely compatible with fully headless sites.
 
 ## What Nicholas Does
 
-On-page load, Nicholas will grab all of the `a` tags on the page, and will preload the pertinent data for that page if
-it that page is a part of the website, and save it in session storage to be used later. The data that gets saved to
-sessionStorage, and how that data is retrieved is up to you.
-
-When a link is clicked, Nicholas checks to see if data for the link was stored when the page loaded. If it was, Nicholas
-will intercept that click, and attempt to load it using the data in sessionStorage instead of from the website. How it
-actually handles the click event is left up to you.
-
-Nicholas is extended using [middleware](https://dzone.com/articles/understanding-middleware-pattern-in-expressjs)
-patterns to handle:
+Out of the box, Nicholas does very little. It is up to you to put together the actions that control _when_, and _how_
+Nicholas caches, and routes. It accomplishes this using
+a [middleware](https://dzone.com/articles/understanding-middleware-pattern-in-expressjs)
+patterns that determine:
 
 1. [How Nicholas is set up](#setup)
 2. [What it does when a cached item is clicked](#extending-route-actions)
 3. [What gets saved to the cache](#extending-what-gets-saved-to-the-cache)
+
+Nicholas also has some pre-built middlewares that can be used to make setting up the cache engine easier. 
 
 ## Installation
 
@@ -62,8 +59,7 @@ import { route } from 'nicholas'
 route( { url: 'https://www.url-to-route-to.com' } )
 ```
 
-It can also be added as an event listener as a middleware inside setupRouter. The router will automatically detect if
-the event is a valid `a` tag, and will use the `href` value for the url automatically.
+It can also be added as an event listener as a middleware inside setupRouter.
 
 ```javascript
 import { setupRouter, route } from 'nicholas';
@@ -77,18 +73,18 @@ window.onload = () => setupRouter( ( args, next ) => {
 
 ## Extending Route Actions
 
-When Nicholas detects that a clicked URL is valid, and should be routed using Nicholas, it runs a set of actions in the
-order in-which they are added. You can add actions that should occur when a URL is being routed at any time
-with `addRouteAction`. You can add as many actions as you need.
+When the `route` function is called, Nicholas runs a set of actions in the order in-which they are added. You can add
+actions that should occur when a URL is being routed at any time with `addRouteActions`. You can add as many actions as
+you need.
 
 Nicholas _does not do anything with the history_. This is because it doesn't know how to handle browser history.
-Instead, Nicholas assumes that you'll set up history inside `addRouteAction` through the context of your app.
+Instead, Nicholas assumes that you'll set up history inside `addRouteActions` through the context of your app.
 
 ```javascript
-import { setupRouter, addRouteAction } from 'nicholas';
+import { setupRouter, addRouteActions } from 'nicholas';
 
 // When a URL is visited, do these actions
-addRouteAction( ( { event, url }, next ) => {
+addRouteActions( ( { event, url }, next ) => {
 	// Stop the event from doing what it would normally do
 	event.preventDefault();
 
@@ -109,10 +105,10 @@ You can also _stop_ a route from using nicholas at any time with a `return` call
 running `next()`. This allows you to add further validations within the context of your app.
 
 ```javascript
-import { setupRouter, addRouteAction } from 'nicholas';
+import { setupRouter, addRouteActions } from 'nicholas';
 
 // When a URL is visited, do these actions
-addRouteAction( ( { event, url }, next ) => {
+addRouteActions( ( { event, url }, next ) => {
 	return
 } )
 
@@ -122,12 +118,11 @@ window.onload = () => setupRouter()
 
 ## Extending What Saves to The Cache
 
-When a page loads, Nicholas scans the page for internal website links, it runs a set of actions in the order in-which
-they were added. You can add actions that save data for the found URLs to the cache using `addCacheAction`. You can add
-as many actions as you need.
+When `cacheItems` runs, it loops through a set of actions in the order in-which they were added. You can add actions
+that save data for the found URLs to the cache using `addCacheActions`. You can add as many actions as you need.
 
 ```javascript
-addCacheAction( ( { urls }, next ) => {
+addCacheActions( ( { urls }, next ) => {
 	// Loop through the found URLs.
 	urls.forEach( url => {
 		// Get the data that needs saved to the cache. This could be an API call, or something else.
@@ -144,8 +139,7 @@ addCacheAction( ( { urls }, next ) => {
 
 ## Manipulating The Cache Directly
 
-In some circumstances, you will need to save to the cache yourself. This can be accomplished using the URL object
-directly.
+To save to the cache, use the URL object.
 
 ```javascript
 import { Url } from 'nicholas'

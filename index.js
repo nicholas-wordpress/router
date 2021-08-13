@@ -1,15 +1,18 @@
 import Url from "./src/Url"
-import { addRouteAction, route } from "./src/RouteMiddleware"
-import { addCacheAction, cacheItems, clearCache } from "./src/CacheMiddleware"
-import { setupRouter, addSetupAction } from './src/SetupMiddleware'
+import { addRouteActions, route, validateMiddleware } from "./src/RouteMiddleware"
+import { addCacheActions, cacheItems, clearCache, localUrlMiddleware } from "./src/CacheMiddleware"
+import { setupRouter, addSetupActions, handleClickMiddleware } from './src/SetupMiddleware'
 
 export {
 	Url,
-	addRouteAction,
+	addRouteActions,
 	route,
-	addCacheAction,
+	addCacheActions,
 	cacheItems,
 	clearCache,
 	setupRouter,
-	addSetupAction
+	localUrlMiddleware,
+	validateMiddleware,
+	handleClickMiddleware,
+	addSetupActions
 }
