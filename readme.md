@@ -89,7 +89,7 @@ addRouteActions( ( { event, url }, next ) => {
 	event.preventDefault();
 
 	// Access the cached data for the current url
-	const cache = url.getCache()
+	const cache = args.url.getCache()
 
 	// Now do things with the cached data!
 
