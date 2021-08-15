@@ -51,7 +51,7 @@ function Url( args ) {
 		return this.origin === home.origin || home.href.startsWith( '/' ) || !home.href.includes( '/' )
 	}
 
-	url.matchesUrl = ( url ) => {
+	url.matchesUrl = function( url ){
 		const testUrl = new Url( url )
 
 		return this.pathname === testUrl.pathname
