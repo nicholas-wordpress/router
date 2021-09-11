@@ -10,6 +10,7 @@
   "license": "GPL-2.0-or-later",
   "dependencies": {
     "crypto-js": "^4.1.1",
+    "js-cookie": "^3.0.1",
     "url-parse": "^1.5.3"
   }
 }

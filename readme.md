@@ -184,3 +184,11 @@ import { clearCache } from 'nicholas'
 // Clears ALL data cached by Nicholas.
 clearCache()
 ```
+
+## Send a Signal to Clear a Session's Cache
+
+If the `clearSessionCacheMiddleware` seup middleware is used, it's possible to clear the session's cache automatically.
+This can be accomplished by setting a `nicholas_flush_cache` cookie. This middleware will automatically delete the
+cookie, and wipe the cache.
+
+This is useful in scenarios where the user's session changes, and cached data is invalidated.

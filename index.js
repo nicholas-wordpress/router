@@ -1,7 +1,7 @@
 import Url from "./src/Url"
 import { addRouteActions, route, validateMiddleware } from "./src/RouteMiddleware"
 import { addCacheActions, cacheItems, clearCache, localUrlMiddleware } from "./src/CacheMiddleware"
-import { setupRouter, addSetupActions, handleClickMiddleware } from './src/SetupMiddleware'
+import { setupRouter, addSetupActions, handleClickMiddleware, clearSessionCacheMiddleware, maybeFlushSessionCache } from './src/SetupMiddleware'
 
 export {
 	Url,
@@ -14,5 +14,7 @@ export {
 	localUrlMiddleware,
 	validateMiddleware,
 	handleClickMiddleware,
+	maybeFlushSessionCache,
+	clearSessionCacheMiddleware,
 	addSetupActions
 }

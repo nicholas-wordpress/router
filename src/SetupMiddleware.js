@@ -1,5 +1,7 @@
 import CreateMiddlewareStack from "./CreateMiddlewareStack";
 import { route } from "./RouteMiddleware";
+import Cookie from "js-cookie";
+import { clearCache } from "nicholas-router/src/CacheMiddleware";
 
 let ran = false
 
@@ -39,4 +41,21 @@ function handleClickMiddleware( args, next ) {
 	next()
 }
 
-export { setupRouter, addSetupActions, handleClickMiddleware };
+function maybeFlushSessionCache(){
+	if ( Cookie.get( 'nicholas_flush_cache' ) ) {
+		console.debug( 'Cache flush for this session was requested from the sever. Cache flushed.' )
+		clearCache()
+		Cookie.remove( 'nicholas_flush_cache' )
+		return true
+	}
+
+	return false
+}
+
+function clearSessionCacheMiddleware( args, next ){
+		maybeFlushSessionCache()
+		next()
+}
+
+
+export { setupRouter, addSetupActions, handleClickMiddleware, maybeFlushSessionCache, clearSessionCacheMiddleware };
